@@ -1,36 +1,22 @@
-This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
+Wallet Asset Converter is a decentralized application (dApp) that allows users to convert their Ethereum (ETH) holdings to Bitcoin (BTC) and vice versa. The dApp is built using Web3.js and Chainlink, with a user-friendly frontend created using Next.js and styled with Tailwind CSS.
+Features
 
-## Getting Started
+    Convert ETH to BTC: The dApp fetches the balance of ETH in a user's wallet and converts it to its equivalent value in BTC using real-time price data from Chainlink.
+    Convert BTC to ETH: The dApp fetches the balance of BTC (calculated from ETH) and converts it back to its equivalent value in ETH.
+    Real-Time Data: It uses Chainlink's decentralized oracles to fetch up-to-date price feeds for ETH and BTC.
+    User Input: Users can enter their wallet address to fetch and convert their assets.
+    Responsive UI: The application is designed with a lavender-purple-pink theme using Tailwind CSS, providing a clean and responsive user interface.
 
-First, run the development server:
+Technologies Used
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
-```
+    Web3.js is used for interacting with the Ethereum blockchain.
+    Chainlink is used for fetching real-time price data.
+    Next.js serves as the React framework for building the frontend.
+    Tailwind CSS is used for styling the user interface.
+    TypeScript is employed for type safety and better code management.
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+Getting Started
+Prerequisites
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
-
-This project uses [`next/font`](https://nextjs.org/docs/basic-features/font-optimization) to automatically optimize and load Inter, a custom Google Font.
-
-## Learn More
-
-To learn more about Next.js, take a look at the following resources:
-
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
-
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js/) - your feedback and contributions are welcome!
-
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/deployment) for more details.
+    Node.js (version 14.x or higher)
+    npm or yarn

@@ -2,6 +2,8 @@
 import { useState } from "react";
 import Web3 from "web3";
 import { ChainlinkPlugin, MainnetPriceFeeds } from "@chainsafe/web3-plugin-chainlink";
+import Link from "next/link";
+import Image from "next/image";
 
 interface Asset {
   name: string;
@@ -104,6 +106,8 @@ const Home: React.FC = () => {
       {/* Footer */}
       <footer className="w-full bg-purple text-white p-4 text-center shadow-md mt-8">
         <p>&copy; 2024 Crypto Converter. All rights reserved.</p>
+        <p className="ml-1"> Made by Adama</p>
+        <Link href={"https://github.com/Adama00/MyDapp"}><Image src="" alt="Github"/></Link>
       </footer>
     </div>
   );
