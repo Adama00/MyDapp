@@ -8,12 +8,18 @@ const config: Config = {
   ],
   theme: {
     extend: {
+      colors: {
+        lavender: '#E6E6FA',
+        purple: '#8A2BE2',
+        pink: '#FF69B4',
+      },
       backgroundImage: {
         "gradient-radial": "radial-gradient(var(--tw-gradient-stops))",
         "gradient-conic":
           "conic-gradient(from 180deg at 50% 50%, var(--tw-gradient-stops))",
       },
     },
+    
   },
   plugins: [],
 };
