@@ -56,58 +56,60 @@ const Home: React.FC = () => {
   }
 
   return (
-    <div className="bg-gradient-to-br from-lavender via-white to-lavender min-h-screen flex flex-col items-center justify-between">
+    <div className="bg-gradient-to-br  from-lavender-400 via-white to-lavender-600 min-h-screen flex flex-col items-center justify-between">
       {/* Header */}
-      <header className="w-full bg-purple text-white p-4  shadow-md">
+      <header className="w-full bg-gradient-to-r from-purple-500 to-pink-500 text-white p-4 shadow-md">
         <h1 className="text-2xl font-semibold">Crypto Converter</h1>
       </header>
 
-      <div className="bg-white p-8 rounded-lg shadow-md w-full max-w-md text-center">
-        <h1 className="text-4xl font-bold text-purple mb-8">Wallet Asset Converter</h1>
+      <div className="bg-white bg-opacity-80 p-8 rounded-lg shadow-md w-full max-w-md text-center mt-12">
+        <h1 className="text-4xl font-bold text-purple-600 mb-8">Wallet Asset Converter</h1>
         <input
           type="text"
           placeholder="Enter wallet address"
           value={walletAddress}
           onChange={(e) => setWalletAddress(e.target.value)}
-          className="w-full p-4 mb-4 border-2 border-purple rounded-lg focus:outline-none focus:border-pink"
+          className="w-full p-4 mb-4 border-2 border-lavender-200 rounded-lg focus:outline-none focus:border-pink-500"
         />
         <button
           onClick={() => {
             fetchAssetsAndConvertToBTC();
             fetchAssetsAndConvertToETH();
           }}
-          className="bg-purple text-white p-4 rounded-lg mb-4 hover:bg-pink transition duration-300"
+          className="bg-gradient-to-r from-purple-500 to-pink-500 text-white p-4 rounded-lg mb-4 hover:bg-pink-600 transition duration-300"
         >
           Fetch and Convert Assets to BTC
         </button>
         <div className="mt-8">
           {assets.map((asset, index) => (
-            <div key={index} className="bg-gradient-to-r from-lavender to-white p-4 mb-4 rounded-lg shadow-sm">
-              <p className="text-purple">{asset.name}: {asset.valueInBTC} BTC</p>
+            <div key={index} className="bg-gradient-to-r from-lavender-300 to-lavender-100 p-4 mb-4 rounded-lg shadow-sm">
+              <p className="text-purple-800">{asset.name}: {asset.valueInBTC} BTC</p>
             </div>
           ))}
         </div>
 
         <button
           onClick={fetchAssetsAndConvertToETH}
-          className="bg-purple text-white p-4 rounded-lg mb-4 hover:bg-pink transition duration-300"
+          className="bg-gradient-to-r from-purple-500 to-pink-500 text-white p-4 rounded-lg mb-4 hover:bg-pink-600 transition duration-300"
         >
           Fetch and Convert BTC to ETH
         </button>
         <div className="mt-8">
           {btcAssets.map((asset, index) => (
-            <div key={index} className="bg-gradient-to-r from-lavender to-white p-4 mb-4 rounded-lg shadow-sm">
-              <p className="text-purple">{asset.name}: {asset.valueInBTC} ETH</p>
+            <div key={index} className="bg-gradient-to-r from-lavender-300 to-lavender-100 p-4 mb-4 rounded-lg shadow-sm">
+              <p className="text-purple-800">{asset.name}: {asset.valueInBTC} ETH</p>
             </div>
           ))}
         </div>
       </div>
 
       {/* Footer */}
-      <footer className="w-full bg-purple text-white p-4 text-center shadow-md mt-8">
+      <footer className="w-full bg-lavender-600 text-white p-4 text-center shadow-md mt-8">
         <p>&copy; 2024 Crypto Converter. All rights reserved.</p>
-        <p className="ml-1"> Made by Adama</p>
-        <Link href={"https://github.com/Adama00/MyDapp"}><Image src="" alt="Github"/></Link>
+        <p> Made by Adama</p>
+        <Link href={"https://github.com/Adama00/MyDapp"}>
+          <Image src="/public/github.jpeg" alt="Github" width={10} height={10} className="w-6 h-6 inline-block" />
+        </Link>
       </footer>
     </div>
   );
