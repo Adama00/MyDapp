@@ -7,13 +7,12 @@ import Image from "next/image";
 
 interface Asset {
   name: string;
-  value?: string; 
-  valueInBTC: string; 
+  value: string;
+  unit: string;
 }
 
 const Home: React.FC = () => {
   const [assets, setAssets] = useState<Asset[]>([]);
-  const [btcAssets, setbtcAssets] = useState<Asset[]>([]);
   const [walletAddress, setWalletAddress] = useState<string>("");
   const [web3, setWeb3] = useState<Web3 | null>(null);
 
@@ -26,50 +25,30 @@ const Home: React.FC = () => {
     initWeb3();
   }, []);
 
-  async function fetchAssetsAndConvertToBTC() {
+  async function fetchAndConvertAssets() {
     if (!web3) return;
     try {
       const balanceInWei = await web3.eth.getBalance(walletAddress);
-      const balanceInEth = web3.utils.fromWei(balanceInWei, 'ether');
+      const balanceInEth = parseFloat(web3.utils.fromWei(balanceInWei, 'ether'));
 
       const btcPriceUSD = await web3.chainlink.getPrice(MainnetPriceFeeds.BtcUsd);
       const ethPriceUSD = await web3.chainlink.getPrice(MainnetPriceFeeds.EthUsd);
 
-      const btcPriceValue = parseFloat(btcPriceUSD.answer.toString());
-      const ethPriceValue = parseFloat(ethPriceUSD.answer.toString());
+      const btcPriceValue = parseFloat(btcPriceUSD.answer.toString()) / 1e8; // Chainlink prices are in 8 decimal places
+      const ethPriceValue = parseFloat(ethPriceUSD.answer.toString()) / 1e8;
 
-      const ethInBtc = (parseFloat(balanceInEth) * ethPriceValue) / btcPriceValue;
+      const ethInUsd = balanceInEth * ethPriceValue;
+      const ethInBtc = balanceInEth * (ethPriceValue / btcPriceValue);
 
-      setAssets([{ name: "ETH", valueInBTC: ethInBtc.toFixed(8) }]);
+      setAssets([
+        { name: "ETH Balance", value: balanceInEth.toFixed(8), unit: "ETH" },
+        { name: "USD Value", value: ethInUsd.toFixed(2), unit: "USD" },
+        { name: "BTC Value", value: ethInBtc.toFixed(8), unit: "BTC" },
+      ]);
     } catch (error) {
-      console.error("Error fetching or converting ETH to BTC:", error);
+      console.error("Error fetching or converting assets:", error);
     }
   }
-
-  async function fetchAssetsAndConvertToETH() {
-    if (!web3) return;
-    try {
-      const balanceInWei = await web3.eth.getBalance(walletAddress);
-      const balanceInEth = web3.utils.fromWei(balanceInWei, 'ether');
-
-      const btcPriceUSD = await web3.chainlink.getPrice(MainnetPriceFeeds.BtcUsd);
-      const ethPriceUSD = await web3.chainlink.getPrice(MainnetPriceFeeds.EthUsd);
-
-      const btcPriceValue = parseFloat(btcPriceUSD.answer.toString());
-      const ethPriceValue = parseFloat(ethPriceUSD.answer.toString());
-
-      const btcToEth = parseFloat(balanceInEth) * (btcPriceValue / ethPriceValue);
-
-      setbtcAssets([{ name: "BTC", valueInBTC: btcToEth.toFixed(8) }]);
-    } catch (error) {
-      console.error("Error fetching or converting BTC to ETH:", error);
-    }
-  }
-
-  const handleFetchAndConvert = async () => {
-    await fetchAssetsAndConvertToBTC();
-    await fetchAssetsAndConvertToETH();
-  };
 
   return (
     <div className="bg-gradient-to-br from-lavender-400 via-white to-lavender-600 min-h-screen flex flex-col items-center justify-between">
@@ -85,25 +64,20 @@ const Home: React.FC = () => {
           placeholder="Enter wallet address"
           value={walletAddress}
           onChange={(e) => setWalletAddress(e.target.value)}
-          className="w-full p-4 mb-4 border-2 border-lavender-200 rounded-lg focus:outline-none focus:border-pink-500"
+          className={`w-full p-4 mb-4 border-2 rounded-lg focus:outline-none 
+            ${walletAddress ? 'bg-lavender-100 border-pink-500' : 'bg-white border-lavender-200'}
+            focus:bg-lavender-200 focus:border-pink-500 transition-colors duration-300`}
         />
         <button
-          onClick={handleFetchAndConvert}
-          className="bg-gradient-to-r from-purple-500 to-pink-500 text-white p-4 rounded-lg mb-4 hover:bg-pink-600 transition duration-300 active:bg-purple-700"
+          onClick={fetchAndConvertAssets}
+          className="bg-gradient-to-r from-purple-500 to-pink-500 text-white p-4 rounded-lg mb-4 hover:bg-pink-600 active:bg-purple-700 transition duration-300"
         >
           Fetch and Convert Assets
         </button>
         <div className="mt-8">
           {assets.map((asset, index) => (
             <div key={index} className="bg-gradient-to-r from-lavender-300 to-lavender-100 p-4 mb-4 rounded-lg shadow-sm">
-              <p className="text-purple-800">{asset.name}: {asset.valueInBTC} BTC</p>
-            </div>
-          ))}
-        </div>
-        <div className="mt-8">
-          {btcAssets.map((asset, index) => (
-            <div key={index} className="bg-gradient-to-r from-lavender-300 to-lavender-100 p-4 mb-4 rounded-lg shadow-sm">
-              <p className="text-purple-800">{asset.name}: {asset.valueInBTC} ETH</p>
+              <p className="text-purple-800">{asset.name}: {asset.value} {asset.unit}</p>
             </div>
           ))}
         </div>
@@ -114,7 +88,7 @@ const Home: React.FC = () => {
         <p>&copy; 2024 Crypto Converter. All rights reserved.</p>
         <p> Made by Adama</p>
         <Link href="https://github.com/Adama00/MyDapp">
-          <Image src="../../public/github.jpeg" alt="Github" width={24} height={24} className="inline-block" />
+          <Image src="/github.jpeg" alt="Github" width={29} height={29} className="inline-block" />
         </Link>
       </footer>
     </div>
